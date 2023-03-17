@@ -1,4 +1,4 @@
-name: Test
+name: Prebuild
 
 on: [push, pull_request]
 
