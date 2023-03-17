@@ -1,37 +1,14 @@
 {
-  "description": "A foundation for scalable desktop apps",
-  "keywords": [
-    "electron",
-    "boilerplate",
-    "react",
-    "typescript",
-    "ts",
-    "sass",
-    "webpack",
-    "hot",
-    "reload"
-  ],
-  "homepage": "https://github.com/electron-react-boilerplate/electron-react-boilerplate#readme",
-  "bugs": {
-    "url": "https://github.com/electron-react-boilerplate/electron-react-boilerplate/issues"
-  },
+  "description": "An electron based client for wheel-based interface",
+  "homepage": "https://github.com/sogang-hci-project/electron-client#readme",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/electron-react-boilerplate/electron-react-boilerplate.git"
   },
   "license": "MIT",
   "author": {
-    "name": "Electron React Boilerplate Maintainers",
-    "email": "electronreactboilerplate@gmail.com",
-    "url": "https://electron-react-boilerplate.js.org"
+    "name": "HCI-project-group"
   },
-  "contributors": [
-    {
-      "name": "Amila Welihinda",
-      "email": "amilajack@gmail.com",
-      "url": "https://github.com/amilajack"
-    }
-  ],
   "main": "./src/main/main.ts",
   "scripts": {
     "build": "concurrently \"npm run build:main\" \"npm run build:renderer\"",
@@ -103,6 +80,8 @@
     "react-router-dom": "^6.8.1"
   },
   "devDependencies": {
+    "@babel/core": "^7.21.3",
+    "@babel/preset-env": "^7.20.2",
     "@electron/notarize": "^1.2.3",
     "@electron/rebuild": "^3.2.10",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.10",
@@ -110,6 +89,7 @@
     "@teamsupercell/typings-for-css-modules-loader": "^2.5.2",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
+    "@types/babel__core": "^7.20.0",
     "@types/jest": "^29.4.0",
     "@types/node": "18.13.0",
     "@types/react": "^18.0.27",
@@ -128,7 +108,7 @@
     "css-minimizer-webpack-plugin": "^4.2.2",
     "detect-port": "^1.5.1",
     "electron": "^23.0.0",
-    "electron-builder": "^23.6.0",
+    "electron-builder": "^24.0.0",
     "electron-devtools-installer": "^3.2.0",
     "electronmon": "^2.0.2",
     "eslint": "^8.33.0",
