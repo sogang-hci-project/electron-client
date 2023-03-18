@@ -13,6 +13,7 @@ const Front = () => {
     });
 
     window.electron.fileHandler.onFileUrl(async (res) => {
+      console.log(res);
       if (res.message === TaskResult.SUCCESS) {
         navigate('/reader', {
           state: { fileUrl: res.data.fileUrl, fileName: res.data.fileName },

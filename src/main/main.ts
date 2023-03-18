@@ -51,7 +51,10 @@ ipcMain.on(Channels.GET_FILE_URL, async (event, arg: GetFileUrlArgument) => {
     return;
   }
   const [fileUrl] = urlList;
-  const fileName = fileUrl.split(/[/]/)[-1].replace(/\.[.]+$/, '');
+  const fileName = fileUrl
+    .split(/[/]/)
+    .pop()
+    ?.replace(/\.[^/.]+$/, '');
 
   event.reply(Channels.GET_FILE_URL, {
     message: TaskResult.SUCCESS,

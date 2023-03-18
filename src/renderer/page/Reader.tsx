@@ -68,7 +68,6 @@ const Reader = () => {
   const location = useLocation();
   const fileUrl = location.state.fileUrl || '';
   const fileName = location.state.fileName || '';
-  console.log(fileUrl);
 
   const handleBack = () => {
     navigate('/');
@@ -84,6 +83,8 @@ const Reader = () => {
         const pdf = await pdfjsLib.getDocument(res.data).promise;
         console.log(pdf);
       } else if (res.message === TaskResult.FAIL) {
+        alert('Failed on opening file');
+        navigate('/');
       }
     });
   };
