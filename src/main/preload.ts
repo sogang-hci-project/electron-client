@@ -1,7 +1,13 @@
 // Disable no-unused-vars, broken for spread args
 /* eslint no-unused-vars: off */
 import { contextBridge, ipcRenderer, IpcRendererEvent } from 'electron';
-import { Channels, FileArgument, FileReply } from '../type/main';
+import {
+  Channels,
+  GetFileDataArgument,
+  GetFileDataResponse,
+  GetFileUrlArgument,
+  GetFileUrlResponse,
+} from '../type/main';
 
 const electronHandler = {
   // Default example
@@ -24,11 +30,17 @@ const electronHandler = {
   },
   // File Handler
   fileHandler: {
-    loadFile(args: FileArgument) {
-      ipcRenderer.send(Channels.FILE, args);
+    getFileData(args: GetFileDataArgument) {
+      ipcRenderer.send(Channels.GET_FILE_DATA, args);
     },
-    onFileLoad(func: (res: FileReply) => void) {
-      ipcRenderer.once(Channels.FILE, (_event, res) => func(res));
+    onFileData(func: (res: GetFileDataResponse) => void) {
+      ipcRenderer.once(Channels.GET_FILE_DATA, (_event, res) => func(res));
+    },
+    getFileUrl(args: GetFileUrlArgument) {
+      ipcRenderer.send(Channels.GET_FILE_URL, args);
+    },
+    onFileUrl(func: (res: GetFileUrlResponse) => void) {
+      ipcRenderer.once(Channels.GET_FILE_URL, (_event, res) => func(res));
     },
   },
 };

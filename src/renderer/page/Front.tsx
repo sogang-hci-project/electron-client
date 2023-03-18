@@ -1,25 +1,28 @@
 import React from 'react';
 import { Container, Button, Typography, Grid, Paper, Box } from '@mui/material';
 import { GiLighthouse } from 'react-icons/gi';
-import { FileType, TaskResult } from 'type/main';
-import * as pdfjsLib from 'pdfjs-dist/legacy/build/pdf';
-// [ISSUE #6]
-// @ts-ignore
-import PDFJSWorker from 'pdfjs-dist/legacy/build/pdf.worker.entry';
-
-const handleLoadPDF = () => {
-  window.electron.fileHandler.loadFile({ type: FileType.PDF });
-  window.electron.fileHandler.onFileLoad(async (res) => {
-    console.log(res);
-    pdfjsLib.GlobalWorkerOptions.workerSrc = PDFJSWorker;
-    if (res.message === TaskResult.SUCCESS) {
-      const pdf = await pdfjsLib.getDocument(res.data).promise;
-      console.log(pdf);
-    }
-  });
-};
+import { FileType, TargetType, TaskResult } from 'type/main';
+import { useNavigate } from 'react-router-dom';
 
 const Front = () => {
+  const navigate = useNavigate();
+
+  const handleLoadPDF = () => {
+    window.electron.fileHandler.getFileUrl({
+      type: FileType.PDF,
+    });
+
+    window.electron.fileHandler.onFileUrl(async (res) => {
+      if (res.message === TaskResult.SUCCESS) {
+        navigate('/reader', {
+          state: { fileUrl: res.data.fileUrl, fileName: res.data.fileName },
+        });
+      } else if (res.message === TaskResult.FAIL) {
+        alert('Failed on Loading Resources');
+      }
+    });
+  };
+
   return (
     <React.Fragment>
       <Paper style={{ width: '30rem', height: '30rem' }} elevation={1}>

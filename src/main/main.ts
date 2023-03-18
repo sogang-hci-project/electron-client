@@ -14,7 +14,12 @@ import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
-import { Channels, FileArgument, FileType, TaskResult } from '../type/main';
+import {
+  Channels,
+  GetFileDataArgument,
+  GetFileUrlArgument,
+  TaskResult,
+} from '../type/main';
 import fs from 'fs';
 
 class AppUpdater {
@@ -33,30 +38,35 @@ ipcMain.on(Channels.IPC_EXAMPLE, async (event, arg) => {
   event.reply(Channels.IPC_EXAMPLE, msgTemplate('pong'));
 });
 
-ipcMain.on(Channels.FILE, async (event, arg: FileArgument) => {
+ipcMain.on(Channels.GET_FILE_URL, async (event, arg: GetFileUrlArgument) => {
   if (!mainWindow) return;
   const { type } = arg;
-  switch (type) {
-    case FileType.PDF:
-      const fileURL = dialog.showOpenDialogSync(mainWindow, {
-        properties: ['openFile'],
-        filters: [{ name: 'PDF', extensions: ['pdf'] }],
-      });
+  const urlList = dialog.showOpenDialogSync(mainWindow, {
+    properties: ['openFile'],
+    filters: [{ name: type, extensions: [type] }],
+  });
 
-      if (!fileURL) {
-        event.reply(Channels.FILE, { message: TaskResult.FAIL });
-        return;
-      }
-
-      const fileData = fs.readFileSync(fileURL[0]);
-      event.reply(Channels.FILE, {
-        message: TaskResult.SUCCESS,
-        data: fileData,
-      });
-      break;
-    default:
-      break;
+  if (!urlList) {
+    event.reply(Channels.GET_FILE_URL, { message: TaskResult.FAIL });
+    return;
   }
+  const [fileUrl] = urlList;
+  const fileName = fileUrl.split(/[/]/)[-1].replace(/\.[.]+$/, '');
+
+  event.reply(Channels.GET_FILE_URL, {
+    message: TaskResult.SUCCESS,
+    data: { fileUrl, fileName },
+  });
+});
+
+ipcMain.on(Channels.GET_FILE_DATA, async (event, arg: GetFileDataArgument) => {
+  if (!mainWindow) return;
+  const { url } = arg;
+  const fileData = fs.readFileSync(url);
+  event.reply(Channels.GET_FILE_DATA, {
+    message: TaskResult.SUCCESS,
+    data: fileData,
+  });
 });
 
 if (process.env.NODE_ENV === 'production') {

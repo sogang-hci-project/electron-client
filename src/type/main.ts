@@ -1,14 +1,24 @@
 export enum Channels {
   IPC_EXAMPLE = 'ipc-example',
-  FILE = 'file',
+  GET_FILE_DATA = 'get-file-data',
+  GET_FILE_URL = 'get-file-url',
 }
 
-export interface FileArgument {
+export interface GetFileUrlArgument {
   type: FileType;
 }
 
+export interface GetFileDataArgument {
+  url: string;
+}
+
 export enum FileType {
-  PDF = 'PDF',
+  PDF = 'pdf',
+}
+
+export enum TargetType {
+  URL = 'url',
+  FILE = 'file',
 }
 
 export enum TaskResult {
@@ -16,7 +26,15 @@ export enum TaskResult {
   FAIL = 'fail',
 }
 
-export interface FileReply {
+export interface GetFileDataResponse {
   message: TaskResult;
   data: Buffer;
+}
+
+export interface GetFileUrlResponse {
+  message: TaskResult;
+  data: {
+    fileUrl: string;
+    fileName: string;
+  };
 }
