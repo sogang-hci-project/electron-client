@@ -9,11 +9,13 @@
  * `./src/main.js` using webpack. This gives us some performance wins.
  */
 import path from 'path';
-import { app, BrowserWindow, shell, ipcMain } from 'electron';
+import { app, BrowserWindow, shell, ipcMain, dialog } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
+import { Channels, FileArgument, FileType, TaskResult } from '../type/main';
+import fs from 'fs';
 
 class AppUpdater {
   constructor() {
@@ -25,10 +27,36 @@ class AppUpdater {
 
 let mainWindow: BrowserWindow | null = null;
 
-ipcMain.on('ipc-example', async (event, arg) => {
+ipcMain.on(Channels.IPC_EXAMPLE, async (event, arg) => {
   const msgTemplate = (pingPong: string) => `IPC test: ${pingPong}`;
   console.log(msgTemplate(arg));
-  event.reply('ipc-example', msgTemplate('pong'));
+  event.reply(Channels.IPC_EXAMPLE, msgTemplate('pong'));
+});
+
+ipcMain.on(Channels.FILE, async (event, arg: FileArgument) => {
+  if (!mainWindow) return;
+  const { type } = arg;
+  switch (type) {
+    case FileType.PDF:
+      const fileURL = dialog.showOpenDialogSync(mainWindow, {
+        properties: ['openFile'],
+        filters: [{ name: 'PDF', extensions: ['pdf'] }],
+      });
+
+      if (!fileURL) {
+        event.reply(Channels.FILE, { message: TaskResult.FAIL });
+        return;
+      }
+
+      const fileData = fs.readFileSync(fileURL[0]);
+      event.reply(Channels.FILE, {
+        message: TaskResult.SUCCESS,
+        data: fileData,
+      });
+      break;
+    default:
+      break;
+  }
 });
 
 if (process.env.NODE_ENV === 'production') {
