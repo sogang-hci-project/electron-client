@@ -2,17 +2,40 @@ import { MemoryRouter as Router, Routes, Route } from 'react-router-dom';
 import Front from './page/Front';
 import Browser from './page/Browser';
 import Reader from './page/Reader';
-import icon from '../../assets/icon.svg';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
 import './App.css';
+
+export const customTheme = createTheme({
+  palette: {
+    mode: 'light',
+    primary: {
+      main: '#cec4c4',
+    },
+    secondary: {
+      main: '#715f67',
+    },
+    background: {
+      default: '#ffffff',
+    },
+    info: {
+      main: '#4e342e',
+    },
+    success: {
+      main: '#668290',
+    },
+  },
+});
 
 export default function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Front />} />
-        <Route path="/reader" element={<Reader />} />
-        <Route path="/browser" element={<Browser />} />
-      </Routes>
-    </Router>
+    <ThemeProvider theme={customTheme}>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Front />} />
+          <Route path="/reader" element={<Reader />} />
+          <Route path="/browser" element={<Browser />} />
+        </Routes>
+      </Router>
+    </ThemeProvider>
   );
 }

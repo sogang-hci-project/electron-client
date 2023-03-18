@@ -3,6 +3,7 @@ import { Container, Button, Typography, Grid, Paper, Box } from '@mui/material';
 import { GiLighthouse } from 'react-icons/gi';
 import { FileType, TargetType, TaskResult } from 'type/main';
 import { useNavigate } from 'react-router-dom';
+import packageJson from '../../../package.json';
 
 const Front = () => {
   const navigate = useNavigate();
@@ -52,14 +53,24 @@ const Front = () => {
             </Typography>
           </Grid>
           <Grid container xs={6} justifyContent="center" alignItems="center">
-            <Button variant="outlined" size="large" onClick={handleLoadPDF}>
+            <Button
+              variant="outlined"
+              size="large"
+              onClick={handleLoadPDF}
+              color={'secondary'}
+            >
               PDF 문서 읽기
             </Button>
           </Grid>
           <Grid container xs={6} justifyContent="center" alignItems="center">
-            <Button variant="outlined" size="large">
+            <Button variant="outlined" size="large" color={'secondary'}>
               웹브라우저
             </Button>
+          </Grid>
+          <Grid container xs={12} justifyContent="center" alignItems="center">
+            <Typography variant="h6" fontSize={13}>
+              {/* {packageJson.version} */}
+            </Typography>
           </Grid>
         </Grid>
       </Paper>

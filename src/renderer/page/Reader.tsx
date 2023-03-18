@@ -116,7 +116,7 @@ const Reader = () => {
               >
                 <VscChevronLeft />
               </IconButton>
-              <Typography variant="h6" color="inherit" component="div">
+              <Typography variant="h6" color="inherit" fontSize={17}>
                 {`${fileName}`}
               </Typography>
             </Grid>
