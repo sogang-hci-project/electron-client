@@ -1,13 +1,21 @@
 import React from 'react';
 import { Container, Button, Typography, Grid, Paper, Box } from '@mui/material';
 import { GiLighthouse } from 'react-icons/gi';
-import { FileType } from 'type/main';
-import pdfjsLib from 'pdfjs-dist';
+import { FileType, TaskResult } from 'type/main';
+import * as pdfjsLib from 'pdfjs-dist/legacy/build/pdf';
+// [ISSUE #6]
+// @ts-ignore
+import PDFJSWorker from 'pdfjs-dist/legacy/build/pdf.worker.entry';
 
 const handleLoadPDF = () => {
   window.electron.fileHandler.loadFile({ type: FileType.PDF });
-  window.electron.fileHandler.onFileLoad((res) => {
+  window.electron.fileHandler.onFileLoad(async (res) => {
     console.log(res);
+    pdfjsLib.GlobalWorkerOptions.workerSrc = PDFJSWorker;
+    if (res.message === TaskResult.SUCCESS) {
+      const pdf = await pdfjsLib.getDocument(res.data).promise;
+      console.log(pdf);
+    }
   });
 };
 
