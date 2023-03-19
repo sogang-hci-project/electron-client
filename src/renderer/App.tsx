@@ -9,10 +9,10 @@ export const customTheme = createTheme({
   palette: {
     mode: 'light',
     primary: {
-      main: '#cec4c4',
+      main: '#715f67',
     },
     secondary: {
-      main: '#715f67',
+      main: '#cec4c4',
     },
     background: {
       default: '#ffffff',

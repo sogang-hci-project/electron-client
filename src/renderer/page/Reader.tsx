@@ -95,7 +95,7 @@ const Reader = () => {
 
   return (
     <Box sx={{ flexGrow: 1, width: '100vw', height: '100vh' }}>
-      <AppBar position="static">
+      <AppBar position="static" color="secondary" elevation={0}>
         <Toolbar variant="dense">
           <Grid container justifyContent="center" alignItems="center">
             <Grid
