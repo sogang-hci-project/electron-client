@@ -12,7 +12,7 @@ export const customTheme = createTheme({
       main: '#715f67',
     },
     secondary: {
-      main: '#cec4c4',
+      main: '#e2d8d8',
     },
     background: {
       default: '#ffffff',
