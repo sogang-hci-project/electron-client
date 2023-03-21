@@ -1,2 +1,2 @@
-export { ReaderAppBar } from './ReaderAppBar';
-export { ReaderPage } from './ReaderPage';
+export { ReaderPage } from './ReaderPage/ReaderPage';
+export { ReaderAppBar } from './ReaderAppBar/ReaderAppBar';
