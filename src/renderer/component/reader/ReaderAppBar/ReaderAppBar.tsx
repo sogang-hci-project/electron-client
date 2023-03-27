@@ -71,6 +71,7 @@ interface ReaderAppBarProps {
   setMagnification: Dispatch<SetStateAction<number>>;
   currentPage: number;
   totalPage: number;
+  changeCurrentPage: (value: number) => void;
 }
 
 export const ReaderAppBar = ({
@@ -80,12 +81,17 @@ export const ReaderAppBar = ({
   setMagnification,
   currentPage,
   totalPage,
+  changeCurrentPage,
 }: ReaderAppBarProps) => {
   const zoomIn = () => {
     setMagnification(Math.round((magnification + 0.1) * 10) / 10);
   };
   const zoomOut = () => {
     setMagnification(Math.round((magnification - 0.1) * 10) / 10);
+  };
+  const handlePageChange = (event: Event, newValue: number | number[]) => {
+    const v = Array.isArray(newValue) ? newValue[0] : newValue;
+    changeCurrentPage(v);
   };
 
   return (
@@ -152,13 +158,12 @@ export const ReaderAppBar = ({
             >
               <Slider
                 aria-label="Temperature"
-                defaultValue={30}
-                // getAriaValueText={30}
+                defaultValue={currentPage}
+                value={currentPage}
                 valueLabelDisplay="auto"
-                step={20}
-                marks
-                min={10}
-                max={100}
+                min={1}
+                max={totalPage}
+                onChange={handlePageChange}
               />
             </Box>
           </Grid>

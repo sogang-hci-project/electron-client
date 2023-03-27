@@ -8,6 +8,7 @@ interface ReaderPageProps {
   pageNumber: number;
   pageHeight: number;
   isActive: boolean;
+  changeCurrentPage: (value: number) => void;
 }
 
 const PageCanvas = styled('canvas')(() => ({
@@ -19,6 +20,7 @@ export const ReaderPage = ({
   pageNumber,
   pageHeight,
   isActive,
+  changeCurrentPage,
 }: ReaderPageProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);

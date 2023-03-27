@@ -63,12 +63,20 @@ const Reader = () => {
   };
 
   const computeIndex = () => {
-    const computedIndex =
+    const newIndex =
       ~~(
         (pageContainerRef.current?.scrollTop || 0) /
         ((pageHeight + pageMargin) * magnification)
       ) + 1;
-    setCurrentPage(computedIndex);
+    setCurrentPage(newIndex);
+  };
+
+  const changeCurrentPage = (page: number) => {
+    if (pageContainerRef.current) {
+      pageContainerRef.current.scrollTop =
+        (pageHeight + pageMargin) * magnification * (page - 1);
+    }
+    computeIndex;
   };
 
   useEffect(() => {
@@ -87,7 +95,7 @@ const Reader = () => {
       pageContainerRef.current &&
         pageContainerRef.current.removeEventListener('scroll', computeIndex);
     };
-  }, [pageContainerRef, magnification]);
+  }, [pageContainerRef, pageHeight, magnification]);
 
   useEffect(() => {
     const newArray = pageWrapperArray.map((pageWrapper) => {
@@ -105,6 +113,7 @@ const Reader = () => {
         magnification={magnification}
         setMagnification={setMagnification}
         currentPage={currentPage}
+        changeCurrentPage={changeCurrentPage}
         totalPage={source?.numPages || 0}
       />
       <div
