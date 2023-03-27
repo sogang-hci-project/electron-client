@@ -69,6 +69,8 @@ interface ReaderAppBarProps {
   fileName: string;
   magnification: number;
   setMagnification: Dispatch<SetStateAction<number>>;
+  currentPage: number;
+  totalPage: number;
 }
 
 export const ReaderAppBar = ({
@@ -76,6 +78,8 @@ export const ReaderAppBar = ({
   fileName,
   magnification,
   setMagnification,
+  currentPage,
+  totalPage,
 }: ReaderAppBarProps) => {
   const zoomIn = () => {
     setMagnification(Math.round((magnification + 0.1) * 10) / 10);
@@ -133,19 +137,32 @@ export const ReaderAppBar = ({
         sx={{ backgroundColor: 'white', color: 'black' }}
       >
         <Grid container justifyContent="center" alignItems="center">
-          <Grid item xs={3}>
-            <Slider
-              aria-label="Temperature"
-              defaultValue={30}
-              // getAriaValueText={30}
-              valueLabelDisplay="auto"
-              step={20}
-              marks
-              min={10}
-              max={100}
-            />
+          <Grid item xs={1}>
+            <Box sx={{ display: 'flex', justifyContent: 'flex-start', gap: 2 }}>
+              <Chip label={`${currentPage}/${totalPage}`} variant="outlined" />
+            </Box>
           </Grid>
-          <Grid item xs={2}></Grid>
+          <Grid item xs={4}>
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'flex-start',
+                gap: 2,
+              }}
+            >
+              <Slider
+                aria-label="Temperature"
+                defaultValue={30}
+                // getAriaValueText={30}
+                valueLabelDisplay="auto"
+                step={20}
+                marks
+                min={10}
+                max={100}
+              />
+            </Box>
+          </Grid>
+          <Grid item xs={0}></Grid>
           <Grid item xs={2}>
             <Box sx={{ display: 'flex', justifyContent: 'center' }}>
               <IconButton size="small">

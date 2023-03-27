@@ -48,7 +48,11 @@ const Reader = () => {
         setSource(pdfSource);
         setPageWrapperArray(
           new Array(pageCount).fill(0).map((_, i) => {
-            return { index: i + 1, isActive: false };
+            if (i < 5) {
+              return { index: i + 1, isActive: true };
+            } else {
+              return { index: i + 1, isActive: false };
+            }
           })
         );
       } else if (res.message === TaskResult.FAIL) {
@@ -58,17 +62,13 @@ const Reader = () => {
     });
   };
 
-  const handleScroll = () => {
+  const computeIndex = () => {
     const computedIndex =
       ~~(
         (pageContainerRef.current?.scrollTop || 0) /
-        ((pageHeight + pageMargin) * magnification)
+        (pageHeight + pageMargin)
       ) + 1;
     setCurrentPage(computedIndex);
-
-    // setScrollPosition(pageContainerRef.current?.scrollTop || 0);
-    // const position = window.pageYOffset;
-    // setScrollPosition(position);
   };
 
   useEffect(() => {
@@ -77,7 +77,7 @@ const Reader = () => {
 
   useEffect(() => {
     pageContainerRef.current &&
-      pageContainerRef.current.addEventListener('scroll', handleScroll, {
+      pageContainerRef.current.addEventListener('scroll', computeIndex, {
         passive: true,
       });
     pageContainerRef.current &&
@@ -85,7 +85,7 @@ const Reader = () => {
 
     return () => {
       pageContainerRef.current &&
-        pageContainerRef.current.removeEventListener('scroll', handleScroll);
+        pageContainerRef.current.removeEventListener('scroll', computeIndex);
     };
   }, [pageContainerRef]);
 
@@ -97,15 +97,6 @@ const Reader = () => {
     setPageWrapperArray(newArray);
   }, [currentPage]);
 
-  // useEffect(() => {
-  //   // console.log('page change');
-  //   console.log(currentPage);
-  // }, [currentPage]);
-
-  // useEffect(() => {
-  //   console.log(scrollPosition);
-  // }, [scrollPosition]);
-
   return (
     <Box sx={{ flexGrow: 1, width: '100vw', height: '100vh' }}>
       <ReaderAppBar
@@ -113,6 +104,8 @@ const Reader = () => {
         fileName={fileName}
         magnification={magnification}
         setMagnification={setMagnification}
+        currentPage={currentPage}
+        totalPage={source?.numPages || 0}
       />
       <div
         style={{
