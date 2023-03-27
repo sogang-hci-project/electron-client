@@ -27,6 +27,7 @@ const Reader = () => {
   );
   const [currentPage, setCurrentPage] = useState(1);
   const [pageHeight, setPageHeight] = useState(0);
+  const [magnification, setMagnification] = useState(1);
   const pageContainerRef = useRef<HTMLDivElement>(null);
 
   const pageMargin = 2;
@@ -61,7 +62,7 @@ const Reader = () => {
     const computedIndex =
       ~~(
         (pageContainerRef.current?.scrollTop || 0) /
-        (pageHeight + pageMargin)
+        ((pageHeight + pageMargin) * magnification)
       ) + 1;
     setCurrentPage(computedIndex);
 
@@ -86,7 +87,7 @@ const Reader = () => {
       pageContainerRef.current &&
         pageContainerRef.current.removeEventListener('scroll', handleScroll);
     };
-  }, [pageContainerRef, pageHeight]);
+  }, [pageContainerRef]);
 
   useEffect(() => {
     const newArray = pageWrapperArray.map((pageWrapper) => {
@@ -107,7 +108,12 @@ const Reader = () => {
 
   return (
     <Box sx={{ flexGrow: 1, width: '100vw', height: '100vh' }}>
-      <ReaderAppBar handleBack={handleBack} fileName={fileName} />
+      <ReaderAppBar
+        handleBack={handleBack}
+        fileName={fileName}
+        magnification={magnification}
+        setMagnification={setMagnification}
+      />
       <div
         style={{
           width: '100%',
@@ -126,7 +132,7 @@ const Reader = () => {
             <ReaderPage
               key={i}
               pageNumber={pageWrapper.index}
-              pageHeight={pageHeight}
+              pageHeight={pageHeight * magnification}
               source={source}
               isActive={pageWrapper.isActive}
             />

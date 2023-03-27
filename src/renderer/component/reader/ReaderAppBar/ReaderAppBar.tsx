@@ -1,17 +1,25 @@
-import React from 'react';
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import Grid from '@mui/material/Grid';
+import React, { Dispatch, SetStateAction } from 'react';
+import {
+  Box,
+  AppBar,
+  Toolbar,
+  IconButton,
+  Typography,
+  Grid,
+  InputBase,
+  TextField,
+  Slider,
+  Chip,
+} from '@mui/material';
 import { styled, alpha } from '@mui/material/styles';
-import InputBase from '@mui/material/InputBase';
 import {
   VscSearchFuzzy,
   VscChevronLeft,
   VscDebugReverseContinue,
   VscDebugContinue,
   VscDebugStop,
+  VscZoomIn,
+  VscZoomOut,
 } from 'react-icons/vsc';
 
 const Search = styled('div')(({ theme }) => ({
@@ -59,9 +67,23 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 interface ReaderAppBarProps {
   handleBack: () => void;
   fileName: string;
+  magnification: number;
+  setMagnification: Dispatch<SetStateAction<number>>;
 }
 
-export const ReaderAppBar = ({ handleBack, fileName }: ReaderAppBarProps) => {
+export const ReaderAppBar = ({
+  handleBack,
+  fileName,
+  magnification,
+  setMagnification,
+}: ReaderAppBarProps) => {
+  const zoomIn = () => {
+    setMagnification(Math.round((magnification + 0.1) * 10) / 10);
+  };
+  const zoomOut = () => {
+    setMagnification(Math.round((magnification - 0.1) * 10) / 10);
+  };
+
   return (
     <AppBar position="static" color="secondary" elevation={1}>
       <Toolbar variant="dense">
@@ -84,7 +106,12 @@ export const ReaderAppBar = ({ handleBack, fileName }: ReaderAppBarProps) => {
             >
               <VscChevronLeft />
             </IconButton>
-            <Typography variant="h6" color="inherit" fontSize={17}>
+            <Typography
+              variant="h6"
+              color="inherit"
+              fontSize={17}
+              sx={{ overflow: 'clip' }}
+            >
               {`${fileName}`}
             </Typography>
           </Grid>
@@ -106,15 +133,47 @@ export const ReaderAppBar = ({ handleBack, fileName }: ReaderAppBarProps) => {
         sx={{ backgroundColor: 'white', color: 'black' }}
       >
         <Grid container justifyContent="center" alignItems="center">
-          <IconButton size="small">
-            <VscDebugReverseContinue />
-          </IconButton>
-          <IconButton size="small">
-            <VscDebugStop />
-          </IconButton>
-          <IconButton size="small">
-            <VscDebugContinue />
-          </IconButton>
+          <Grid item xs={3}>
+            <Slider
+              aria-label="Temperature"
+              defaultValue={30}
+              // getAriaValueText={30}
+              valueLabelDisplay="auto"
+              step={20}
+              marks
+              min={10}
+              max={100}
+            />
+          </Grid>
+          <Grid item xs={2}></Grid>
+          <Grid item xs={2}>
+            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+              <IconButton size="small">
+                <VscDebugReverseContinue />
+              </IconButton>
+              <IconButton size="small">
+                <VscDebugStop />
+              </IconButton>
+              <IconButton size="small">
+                <VscDebugContinue />
+              </IconButton>
+            </Box>
+          </Grid>
+          <Grid item xs={3}></Grid>
+          <Grid item xs={2}>
+            <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2 }}>
+              <IconButton size="small" onClick={zoomIn}>
+                <VscZoomIn />
+              </IconButton>
+              <IconButton size="small" onClick={zoomOut}>
+                <VscZoomOut />
+              </IconButton>
+              <Chip
+                label={`${Math.round(magnification * 100)} %`}
+                variant="outlined"
+              />
+            </Box>
+          </Grid>
         </Grid>
       </Toolbar>
     </AppBar>

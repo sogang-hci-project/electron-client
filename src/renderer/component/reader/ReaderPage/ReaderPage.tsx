@@ -55,11 +55,11 @@ export const ReaderPage = ({
 
   useEffect(() => {
     computeSize();
-  }, [source]);
+  }, [source, pageHeight]);
 
   useEffect(() => {
     renderPdf();
-  }, [isActive]);
+  }, [isActive, viewport]);
 
   return (
     <div>
