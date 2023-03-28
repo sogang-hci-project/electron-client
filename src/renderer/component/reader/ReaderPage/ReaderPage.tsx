@@ -1,14 +1,13 @@
 import React, { useRef, useEffect, useMemo, useState } from 'react';
 import { styled } from '@mui/material/styles';
-import * as pdfjsLib from 'pdfjs-dist/legacy/build/pdf';
-import { PageViewport } from 'pdfjs-dist/types/src/display/display_utils';
+import * as pdfjsLib from '@pdf/legacy/build/pdf';
+import { PageViewport } from '@pdf/types/src/display/display_utils';
 
 interface ReaderPageProps {
   source: pdfjsLib.PDFDocumentProxy | undefined;
   pageNumber: number;
   pageHeight: number;
   isActive: boolean;
-  changeCurrentPage: (value: number) => void;
 }
 
 const PageCanvas = styled('canvas')(() => ({
@@ -20,7 +19,6 @@ export const ReaderPage = ({
   pageNumber,
   pageHeight,
   isActive,
-  changeCurrentPage,
 }: ReaderPageProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);

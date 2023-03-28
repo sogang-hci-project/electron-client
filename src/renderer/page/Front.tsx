@@ -1,7 +1,7 @@
 import React from 'react';
 import { Container, Button, Typography, Grid, Paper, Box } from '@mui/material';
 import { GiLighthouse } from 'react-icons/gi';
-import { FileType, TargetType, TaskResult } from 'type/main';
+import { FileType, TargetType, TaskResult } from '@type/main';
 import { useNavigate } from 'react-router-dom';
 import { styled, alpha } from '@mui/material/styles';
 import PackageJson from '../../../package.json';
@@ -23,7 +23,7 @@ const Front = () => {
       type: FileType.PDF,
     });
 
-    window.electron.fileHandler.onFileUrl(async (res) => {
+    window.electron.fileHandler.onFileUrl(async (res: any) => {
       console.log(res);
       if (res.message === TaskResult.SUCCESS) {
         navigate('/reader', {

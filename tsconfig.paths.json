@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@component/*": [
+        "src/renderer/component/*"
+      ],
+      "@type/*": [
+        "src/type/*"
+      ],
+      "@native_modules/*": [
+        "release/app/node_modules/*"
+      ],
+      "@pdf/*": [
+        "release/app/node_modules/pdfjs-dist/*"
+      ]
+    }
+  }
+}

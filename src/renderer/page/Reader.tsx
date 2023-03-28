@@ -4,12 +4,12 @@ import { OverridableComponent } from '@mui/types';
 
 import { BoxTypeMap } from '@mui/system';
 import { useLocation, useNavigate } from 'react-router-dom';
-import * as pdfjsLib from 'pdfjs-dist/legacy/build/pdf';
+import * as pdfjsLib from '@native_modules/pdfjs-dist';
+import { ReaderAppBar, ReaderPage } from '@component/reader';
 // [ISSUE #6]
 // @ts-ignore
-import PDFJSWorker from 'pdfjs-dist/legacy/build/pdf.worker.entry';
-import { TaskResult } from 'type/main';
-import { ReaderAppBar, ReaderPage } from 'renderer/component/reader';
+import PDFJSWorker from '../../../release/app/node_modules/pdfjs-dist/legacy/build/pdf.worker.entry';
+import { TaskResult } from '@type/main';
 
 interface PageWrapper {
   index: number;
@@ -41,7 +41,7 @@ const Reader = () => {
     window.electron.fileHandler.getFileData({
       url: fileUrl,
     });
-    window.electron.fileHandler.onFileData(async (res) => {
+    window.electron.fileHandler.onFileData(async (res: any) => {
       if (res.message === TaskResult.SUCCESS) {
         const pdfSource = await pdfjsLib.getDocument(res.data).promise;
         const pageCount = pdfSource?.numPages || 0;
