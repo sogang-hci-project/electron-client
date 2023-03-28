@@ -112,7 +112,7 @@
     "css-loader": "^6.7.3",
     "css-minimizer-webpack-plugin": "^4.2.2",
     "detect-port": "^1.5.1",
-    "electron": "^23.0.0",
+    "electron": "^23.2.0",
     "electron-builder": "^24.0.0",
     "electron-devtools-installer": "^3.2.0",
     "electronmon": "^2.0.2",
@@ -155,8 +155,8 @@
     "webpack-merge": "^5.8.0"
   },
   "build": {
-    "productName": "ElectronReact",
-    "appId": "org.erb.ElectronReact",
+    "productName": "Lighthouse",
+    "appId": "org.erb.Lighthouse",
     "asar": true,
     "asarUnpack": "**\\*.{node,dll}",
     "files": [
@@ -214,8 +214,8 @@
     ],
     "publish": {
       "provider": "github",
-      "owner": "electron-react-boilerplate",
-      "repo": "electron-react-boilerplate"
+      "owner": "sogang-hci-group",
+      "repo": "sogang-hci-group"
     }
   },
   "collective": {

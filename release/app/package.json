@@ -16,5 +16,8 @@
   },
   "dependencies": {
     "pdfjs-dist": "^3.4.120"
+  },
+  "devDependencies": {
+    "electron": "^23.2.0"
   }
 }
