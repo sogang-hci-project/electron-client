@@ -83,6 +83,7 @@ export const ReaderAppBar = ({
   totalPage,
   changeCurrentPage,
 }: ReaderAppBarProps) => {
+  // [#7] 줌인, 줌아웃시 렌더링이 반복되는 문제
   const zoomIn = () => {
     setMagnification(Math.round((magnification + 0.1) * 10) / 10);
   };
