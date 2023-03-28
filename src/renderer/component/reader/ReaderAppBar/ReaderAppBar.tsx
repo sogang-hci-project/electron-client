@@ -120,7 +120,14 @@ export const ReaderAppBar = ({
               variant="h6"
               color="inherit"
               fontSize={17}
-              sx={{ overflow: 'clip' }}
+              sx={{
+                textOverflow: 'ellipsis',
+                overflow: 'hidden',
+                whitespace: 'nowrap',
+                wordWrap: 'break-word',
+                maxHeight: '1.5rem',
+                maxWidth: '80%',
+              }}
             >
               {`${fileName}`}
             </Typography>
