@@ -21,6 +21,7 @@ import {
   VscZoomIn,
   VscZoomOut,
 } from 'react-icons/vsc';
+import { useNavigate } from 'react-router-dom';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -65,36 +66,11 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 interface ReaderAppBarProps {
-  handleBack: () => void;
   fileName: string;
-  magnification: number;
-  setMagnification: Dispatch<SetStateAction<number>>;
-  currentPage: number;
-  totalPage: number;
-  changeCurrentPage: (value: number) => void;
+  handleBack: () => void;
 }
 
-export const ReaderAppBar = ({
-  handleBack,
-  fileName,
-  magnification,
-  setMagnification,
-  currentPage,
-  totalPage,
-  changeCurrentPage,
-}: ReaderAppBarProps) => {
-  // [#7] 줌인, 줌아웃시 렌더링이 반복되는 문제
-  const zoomIn = () => {
-    setMagnification(Math.round((magnification + 0.1) * 10) / 10);
-  };
-  const zoomOut = () => {
-    setMagnification(Math.round((magnification - 0.1) * 10) / 10);
-  };
-  const handlePageChange = (event: Event, newValue: number | number[]) => {
-    const v = Array.isArray(newValue) ? newValue[0] : newValue;
-    changeCurrentPage(v);
-  };
-
+export const ReaderAppBar = ({ fileName, handleBack }: ReaderAppBarProps) => {
   return (
     <AppBar position="static" color="secondary" elevation={1}>
       <Toolbar variant="dense">
@@ -143,66 +119,6 @@ export const ReaderAppBar = ({
                 inputProps={{ 'aria-label': 'search' }}
               />
             </Search>
-          </Grid>
-        </Grid>
-      </Toolbar>
-      <Toolbar
-        variant="dense"
-        sx={{ backgroundColor: 'white', color: 'black' }}
-      >
-        <Grid container justifyContent="center" alignItems="center">
-          <Grid item xs={1}>
-            <Box sx={{ display: 'flex', justifyContent: 'flex-start', gap: 2 }}>
-              <Chip label={`${currentPage}/${totalPage}`} variant="outlined" />
-            </Box>
-          </Grid>
-          <Grid item xs={4}>
-            <Box
-              sx={{
-                display: 'flex',
-                justifyContent: 'flex-start',
-                gap: 2,
-              }}
-            >
-              <Slider
-                aria-label="Temperature"
-                defaultValue={currentPage}
-                value={currentPage}
-                valueLabelDisplay="auto"
-                min={1}
-                max={totalPage}
-                onChange={handlePageChange}
-              />
-            </Box>
-          </Grid>
-          <Grid item xs={0}></Grid>
-          <Grid item xs={2}>
-            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-              <IconButton size="small">
-                <VscDebugReverseContinue />
-              </IconButton>
-              <IconButton size="small">
-                <VscDebugStop />
-              </IconButton>
-              <IconButton size="small">
-                <VscDebugContinue />
-              </IconButton>
-            </Box>
-          </Grid>
-          <Grid item xs={3}></Grid>
-          <Grid item xs={2}>
-            <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2 }}>
-              <IconButton size="small" onClick={zoomIn}>
-                <VscZoomIn />
-              </IconButton>
-              <IconButton size="small" onClick={zoomOut}>
-                <VscZoomOut />
-              </IconButton>
-              <Chip
-                label={`${Math.round(magnification * 100)} %`}
-                variant="outlined"
-              />
-            </Box>
           </Grid>
         </Grid>
       </Toolbar>
