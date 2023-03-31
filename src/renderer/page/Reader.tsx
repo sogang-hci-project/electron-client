@@ -10,6 +10,9 @@ import { ReaderAppBar, ReaderPage } from '@component/reader';
 // @ts-ignore
 import PDFJSWorker from '../../../release/app/node_modules/pdfjs-dist/legacy/build/pdf.worker.entry';
 import { TaskResult } from '@type/main';
+import { useSelector, useDispatch } from 'react-redux';
+import { useAppDispatch } from '../store';
+import useSource from '../hook/useSource';
 
 interface PageWrapper {
   index: number;
@@ -21,7 +24,7 @@ const Reader = () => {
   const location = useLocation();
   const fileUrl = location.state.fileUrl || '';
   const fileName = location.state.fileName || '';
-  const [source, setSource] = useState<pdfjsLib.PDFDocumentProxy>();
+  const { source } = useSource({ sourceUrl: fileUrl });
   const [pageWrapperArray, setPageWrapperArray] = useState<Array<PageWrapper>>(
     []
   );
@@ -31,35 +34,10 @@ const Reader = () => {
   const pageContainerRef = useRef<HTMLDivElement>(null);
 
   const pageMargin = 2;
+  const dispatch = useAppDispatch();
 
   const handleBack = () => {
     navigate('/');
-  };
-
-  const loadPdf = async (fileUrl: string) => {
-    pdfjsLib.GlobalWorkerOptions.workerSrc = PDFJSWorker;
-    window.electron.fileHandler.getFileData({
-      url: fileUrl,
-    });
-    window.electron.fileHandler.onFileData(async (res: any) => {
-      if (res.message === TaskResult.SUCCESS) {
-        const pdfSource = await pdfjsLib.getDocument(res.data).promise;
-        const pageCount = pdfSource?.numPages || 0;
-        setSource(pdfSource);
-        setPageWrapperArray(
-          new Array(pageCount).fill(0).map((_, i) => {
-            if (i < 5) {
-              return { index: i + 1, isActive: true };
-            } else {
-              return { index: i + 1, isActive: false };
-            }
-          })
-        );
-      } else if (res.message === TaskResult.FAIL) {
-        alert('Failed on opening source');
-        navigate('/');
-      }
-    });
   };
 
   const computeIndex = () => {
@@ -76,12 +54,21 @@ const Reader = () => {
       pageContainerRef.current.scrollTop =
         (pageHeight + pageMargin) * magnification * (page - 1);
     }
-    computeIndex;
+    computeIndex();
   };
 
   useEffect(() => {
-    fileUrl && loadPdf(fileUrl);
-  }, []);
+    const pageCount = source?.numPages || 0;
+    setPageWrapperArray(
+      new Array(pageCount).fill(0).map((_, i) => {
+        if (i < 5) {
+          return { index: i + 1, isActive: true };
+        } else {
+          return { index: i + 1, isActive: false };
+        }
+      })
+    );
+  }, [source]);
 
   useEffect(() => {
     pageContainerRef.current &&

@@ -4,7 +4,7 @@ import * as pdfjsLib from '@pdf/legacy/build/pdf';
 import { PageViewport } from '@pdf/types/src/display/display_utils';
 
 interface ReaderPageProps {
-  source: pdfjsLib.PDFDocumentProxy | undefined;
+  source: pdfjsLib.PDFDocumentProxy | null;
   pageNumber: number;
   pageHeight: number;
   isActive: boolean;

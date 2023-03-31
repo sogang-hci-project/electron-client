@@ -5,6 +5,7 @@ import { FileType, TargetType, TaskResult } from '@type/main';
 import { useNavigate } from 'react-router-dom';
 import { styled, alpha } from '@mui/material/styles';
 import PackageJson from '../../../package.json';
+import { useAppDispatch } from '../store';
 
 const CenteredBox = styled(Box)({
   display: 'flex',
@@ -17,6 +18,7 @@ const CenteredBox = styled(Box)({
 
 const Front = () => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   const handleLoadPDF = () => {
     window.electron.fileHandler.getFileUrl({
@@ -24,7 +26,6 @@ const Front = () => {
     });
 
     window.electron.fileHandler.onFileUrl(async (res: any) => {
-      console.log(res);
       if (res.message === TaskResult.SUCCESS) {
         navigate('/reader', {
           state: { fileUrl: res.data.fileUrl, fileName: res.data.fileName },
